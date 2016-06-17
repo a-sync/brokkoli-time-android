@@ -18,13 +18,9 @@
 
 <changelog bulletedList="true">
 
-    <changelogversion>
+    <changelogversion versionName="1.0.0">
+        <changelogtext>Első béta!</changelogtext>
         <changelogtext>Beállítható Passkey</changelogtext>
-    </changelogversion>
-
-    <changelogversion versionName="0.0.0">
-        <changelogtext>Első alfa</changelogtext>
-        <changelogtext>Kukorica API a filmekhez</changelogtext>
     </changelogversion>
 
 </changelog>

@@ -94,7 +94,7 @@ public class MoviesProvider extends MediaProvider {
                 sort = "date_added";
                 break;
             case TRENDING:
-                sort = "trending";//mod:trending_score
+                sort = "trending_score";
                 break;
             case POPULARITY:
                 sort = "seeds";
@@ -139,7 +139,10 @@ public class MoviesProvider extends MediaProvider {
             params.add(new NameValuePair("lang", filters.langCode));
         }
 
-        params.add(new NameValuePair("cat", "Hun"));//TODO: Hun / Eng switch
+        String passkey = PrefUtils.get(ButterApplication.getAppContext(), Prefs.PASSKEY, "");
+        if(passkey.matches("[a-fA-F0-9]{32}")) {
+            params.add(new NameValuePair("cat", "Hun"));//TODO: Hun / Eng switch
+        }
 
         Request.Builder requestBuilder = new Request.Builder();
         String query = buildQuery(params);
@@ -256,6 +259,8 @@ public class MoviesProvider extends MediaProvider {
                 movies = (ArrayList<LinkedTreeMap<String, Object>>) data.get("movies");
             }
 
+            String passkey = PrefUtils.get(ButterApplication.getAppContext(), Prefs.PASSKEY, "{PASSKEY}");
+
             for (LinkedTreeMap<String, Object> item : movies) {
                 Movie movie = new Movie(sMediaProvider, sSubsProvider);
 
@@ -284,7 +289,7 @@ public class MoviesProvider extends MediaProvider {
                         if(movie.image == "") movie.image = null;
                     }
 
-                    movie.headerImage = (String) item.get("background_image");
+                    movie.headerImage = (String) item.get("background_image");//mod:background_image_original
                     if(movie.headerImage == "") movie.headerImage = null;
 
                     String yt_trailer_code = item.get("yt_trailer_code").toString();
@@ -311,7 +316,7 @@ public class MoviesProvider extends MediaProvider {
 
                             if(torrent.hash == "") {
                                 torrent.url = (String) torrentObj.get("url");
-                                torrent.url = torrent.url.replace("{PASSKEY}", PrefUtils.get(ButterApplication.getAppContext(), Prefs.PASSKEY, "{PASSKEY}"));
+                                torrent.url = torrent.url.replace("{PASSKEY}", passkey);
                             }
                             else {
                                 try {
