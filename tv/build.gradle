@@ -57,11 +57,18 @@ android {
             storeFile System.getenv("S_KEYSTORE").toString() ? file(System.getenv("S_KEYSTORE").toString()) : file("")
             storePassword System.getenv("S_KEYPASS").toString() ?: ""
         }
+        localConfig {
+            keyAlias "Brokkoli Time TV"
+            keyPassword "kukica"
+            storeFile file("D:/!installs/!Brokkoli Time/brokkoli/android/.keystore/brokkolitime_tv.jks")
+            storePassword "kukica"
+        }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.mainConfig
+            //signingConfig signingConfigs.mainConfig
+            signingConfig signingConfigs.localConfig
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
