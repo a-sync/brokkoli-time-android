@@ -345,10 +345,11 @@ public class TVProvider extends MediaProvider {
     public List<NavInfo> getNavigation() {
         List<NavInfo> tabs = new ArrayList<>();
 
+        tabs.add(new NavInfo(R.id.eztv_filter_last_updated,Filters.Sort.DATE, Filters.Order.DESC, ButterApplication.getAppContext().getString(R.string.last_updated),R.drawable.eztv_filter_last_updated));
         tabs.add(new NavInfo(R.id.eztv_filter_trending,Filters.Sort.TRENDING, Filters.Order.DESC, ButterApplication.getAppContext().getString(R.string.trending),R.drawable.eztv_filter_trending));
         tabs.add(new NavInfo(R.id.eztv_filter_popular_now,Filters.Sort.POPULARITY, Filters.Order.DESC, ButterApplication.getAppContext().getString(R.string.popular),R.drawable.eztv_filter_popular_now));
         tabs.add(new NavInfo(R.id.eztv_filter_top_rated,Filters.Sort.RATING, Filters.Order.DESC, ButterApplication.getAppContext().getString(R.string.top_rated),R.drawable.eztv_filter_top_rated));
-        tabs.add(new NavInfo(R.id.eztv_filter_last_updated,Filters.Sort.DATE, Filters.Order.DESC, ButterApplication.getAppContext().getString(R.string.last_updated),R.drawable.eztv_filter_last_updated));
+
         tabs.add(new NavInfo(R.id.eztv_filter_year,Filters.Sort.YEAR, Filters.Order.DESC, ButterApplication.getAppContext().getString(R.string.year),R.drawable.eztv_filter_year));
         tabs.add(new NavInfo(R.id.eztv_filter_a_to_z,Filters.Sort.ALPHABET, Filters.Order.ASC, ButterApplication.getAppContext().getString(R.string.a_to_z),R.drawable.eztv_filter_a_to_z));
         return tabs;

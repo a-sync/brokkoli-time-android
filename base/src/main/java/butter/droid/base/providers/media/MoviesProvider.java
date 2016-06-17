@@ -82,13 +82,44 @@ public class MoviesProvider extends MediaProvider {
         }
 
         ArrayList<NameValuePair> params = new ArrayList<>();
-        params.add(new NameValuePair("limit", "50"));
-
-        params.add(new NameValuePair("cat", "Hun"));//TODO: Hun / Eng switch
 
         if (filters == null) {
             filters = new Filters();
         }
+
+        String sort;
+        switch (filters.sort) {
+            default:
+            case DATE:
+                sort = "date_added";
+                break;
+            case TRENDING:
+                sort = "trending";//mod:trending_score
+                break;
+            case POPULARITY:
+                sort = "seeds";
+                break;
+            case RATING:
+                sort = "rating";
+                break;
+
+            case YEAR:
+                sort = "year";
+                break;
+            case ALPHABET:
+                sort = "title";
+                break;
+            //TODO: download_count / views
+        }
+        params.add(new NameValuePair("sort_by", sort));
+
+        params.add(new NameValuePair("limit", "50"));
+
+        Integer pagenum = 1;
+        if (filters.page != null) {
+            pagenum = filters.page;
+        }
+        params.add(new NameValuePair("page", Integer.toString(pagenum)));
 
         if (filters.keywords != null) {
             params.add(new NameValuePair("query_term", filters.keywords));
@@ -100,43 +131,15 @@ public class MoviesProvider extends MediaProvider {
 
         if (filters.order == Filters.Order.ASC) {
             params.add(new NameValuePair("order_by", "asc"));
-        } else {
+        }/* else {
             params.add(new NameValuePair("order_by", "desc"));
-        }
+        }*/
 
         if(filters.langCode != null) {
             params.add(new NameValuePair("lang", filters.langCode));
         }
 
-        String sort;
-        switch (filters.sort) {
-            default:
-            case POPULARITY:
-                sort = "seeds";
-                break;
-            case YEAR:
-                sort = "year";
-                break;
-            case DATE:
-                sort = "date_added";
-                break;
-            case RATING:
-                sort = "rating";
-                break;
-            case ALPHABET:
-                sort = "title";
-                break;
-            case TRENDING:
-                sort = "trending";
-                break;
-            //TODO: download_count / views
-        }
-
-        params.add(new NameValuePair("sort_by", sort));
-
-        if (filters.page != null) {
-            params.add(new NameValuePair("page", Integer.toString(filters.page)));
-        }
+        params.add(new NameValuePair("cat", "Hun"));//TODO: Hun / Eng switch
 
         Request.Builder requestBuilder = new Request.Builder();
         String query = buildQuery(params);
@@ -261,13 +264,14 @@ public class MoviesProvider extends MediaProvider {
 
                 int existingItem = isInResults(existingList, movie.videoId);
                 if (existingItem == -1) {
-                    movie.title = (String) item.get("title");
+                    movie.title = (String) item.get("title");//mod:title_english
 
                     //Double year = (Double) item.get("year");
                     //movie.year = Integer.toString(year.intValue());
                     movie.year =  item.get("year").toString();
 
                     movie.rating = item.get("rating").toString();
+                    if(movie.rating == "") movie.rating = "0";
 
                     //movie.genre = ((ArrayList<String>) item.get("genres")).get(0);
                     ArrayList<String> genres = (ArrayList<String>) item.get("genres");
@@ -275,13 +279,20 @@ public class MoviesProvider extends MediaProvider {
                     else movie.genre = "";
 
                     movie.image = (String) item.get("large_cover_image");
-                    if(movie.image == "") movie.image = (String) item.get("medium_cover_image");
+                    if(movie.image == "") {
+                        movie.image = (String) item.get("medium_cover_image");
+                        if(movie.image == "") movie.image = null;
+                    }
 
                     movie.headerImage = (String) item.get("background_image");
-                    movie.trailer = "https://youtube.com/watch?v=" + item.get("yt_trailer_code");
+                    if(movie.headerImage == "") movie.headerImage = null;
+
+                    String yt_trailer_code = item.get("yt_trailer_code").toString();
+                    if(yt_trailer_code != "") movie.trailer = "https://youtube.com/watch?v=" + yt_trailer_code;
+
                     Double runtime = (Double) item.get("runtime");
                     movie.runtime = Integer.toString(runtime.intValue());
-                    movie.synopsis = (String) item.get("synopsis");
+                    movie.synopsis = (String) item.get("synopsis");//mod:description_full
                     movie.certification = (String) item.get("mpa_rating");
                     movie.fullImage = movie.image;
 
