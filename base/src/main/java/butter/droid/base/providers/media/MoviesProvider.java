@@ -181,39 +181,45 @@ public class MoviesProvider extends MediaProvider {
 
             @Override
             public void onResponse(Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String responseStr;
-                    try {
-                        responseStr = response.body().string();
-                    } catch (SocketException e) {
-                        onFailure(response.request(), new IOException("Socket failed"));
-                        return;
-                    }
+                try {
+                    if (response.isSuccessful()) {
+                        String responseStr;
+                        try {
+                            responseStr = response.body().string();
+                        } catch (SocketException e) {
+                            onFailure(response.request(), new IOException("Socket failed"));
+                            return;
+                        }
 
-                    APIResponse result;
-                    try {
-                        result = mGson.fromJson(responseStr, APIResponse.class);
-                    } catch (IllegalStateException e) {
-                        onFailure(response.request(), new IOException("JSON Failed"));
-                        return;
-                    } catch (JsonSyntaxException e) {
-                        onFailure(response.request(), new IOException("JSON Failed"));
-                        return;
-                    }
+                        APIResponse result;
+                        try {
+                            result = mGson.fromJson(responseStr, APIResponse.class);
+                        } catch (IllegalStateException e) {
+                            onFailure(response.request(), new IOException("JSON Failed"));
+                            return;
+                        } catch (JsonSyntaxException e) {
+                            onFailure(response.request(), new IOException("JSON Failed"));
+                            return;
+                        }
 
-                    if(result == null) {
-                        callback.onFailure(new NetworkErrorException("No response"));
-                    } else if (result.status != null && result.status.equals("error")) {
-                        callback.onFailure(new NetworkErrorException(result.status_message));
-                    } else if(result.data != null && ((result.data.get("movies") != null && ((ArrayList<LinkedTreeMap<String, Object>>)result.data.get("movies")).size() <= 0) || ((Double)result.data.get("movie_count")).intValue() <= currentList.size())) {
-                        callback.onFailure(new NetworkErrorException("No movies found"));
-                    } else {
-                        ArrayList<Media> formattedData = result.formatForPopcorn(currentList);
-                        callback.onSuccess(filters, formattedData, true);
-                        return;
+                        if (result == null) {
+                            callback.onFailure(new NetworkErrorException("Empty response"));
+                        } else if (result.status != null && result.status.equals("error")) {
+                            callback.onFailure(new NetworkErrorException(result.status_message));
+                        } else if (result.data != null && ((result.data.get("movies") != null && ((ArrayList<LinkedTreeMap<String, Object>>) result.data.get("movies")).size() <= 0) || ((Double) result.data.get("movie_count")).intValue() <= currentList.size())) {
+                            callback.onFailure(new NetworkErrorException("No movies found"));
+                        } else {
+                            ArrayList<Media> formattedData = result.formatForPopcorn(currentList);
+                            callback.onSuccess(filters, formattedData, true);
+                            return;
+                        }
                     }
                 }
-                onFailure(response.request(), new IOException("Couldn't connect to YTS"));
+                catch (Exception e) {
+                    callback.onFailure(e);
+                }
+
+                onFailure(response.request(), new IOException("Couldn't connect to MOVIE api"));
             }
         });
     }
