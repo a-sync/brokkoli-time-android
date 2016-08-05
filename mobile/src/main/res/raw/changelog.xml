@@ -20,7 +20,8 @@
 
     <changelogversion versionName="1.0.0">
         <changelogtext>Első béta!</changelogtext>
-        <changelogtext>Beállítható Passkey</changelogtext>
+        <changelogtext>Build fix, plugin frissítések, SDK frissítés, API hiba kezelések</changelogtext>
+        <changelogtext>Passkey megadási lehetőség</changelogtext>
     </changelogversion>
 
 </changelog>
