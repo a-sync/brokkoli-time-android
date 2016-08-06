@@ -34,6 +34,7 @@ public class StringInputDialogFragment extends DialogFragment {
 
     public static final String TITLE = "title";
     public static final String DEFAULT_VALUE = "default_val";
+    public static final String INPUT_TYPE = "input_type";
 
     private ResultListener mOnResultListener;
 
@@ -57,7 +58,7 @@ public class StringInputDialogFragment extends DialogFragment {
 
         final EditText stringInput = new EditText(getActivity());
         stringInput.setLayoutParams(lp);
-        stringInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        stringInput.setInputType(getArguments().getInt(INPUT_TYPE, InputType.TYPE_CLASS_TEXT));
         stringInput.setText(currentValue);
 
         builder

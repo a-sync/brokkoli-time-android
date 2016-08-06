@@ -242,6 +242,7 @@ public class PreferencesActivity extends ButterBaseActivity
             Bundle args = new Bundle();
             args.putString(StringInputDialogFragment.TITLE, title);
             args.putString(StringInputDialogFragment.DEFAULT_VALUE, (String) value);
+            args.putInt(StringInputDialogFragment.INPUT_TYPE, low);
 
             StringInputDialogFragment dialogFragment = new StringInputDialogFragment();
             dialogFragment.setArguments(args);

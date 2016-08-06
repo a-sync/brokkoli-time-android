@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
+import android.text.InputType;
 import android.text.format.DateFormat;
 
 import java.text.SimpleDateFormat;
@@ -395,7 +396,7 @@ public interface PreferencesHandler {
                     .setOnClickListener(new PrefItem.OnClickListener() {
                         @Override
                         public void onClick(final PrefItem item) {
-                            handler.openListSelection(item.getTitle(), null, SelectionMode.STRING, (String) item.getValue(), 0, 0, new OnSelectionListener() {
+                            handler.openListSelection(item.getTitle(), null, SelectionMode.STRING, (String) item.getValue(), (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD), 0, new OnSelectionListener() {
                                 @Override
                                 public void onSelection(int position, Object value) {
                                     item.saveValue(value);
