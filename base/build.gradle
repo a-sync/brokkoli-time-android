@@ -12,7 +12,7 @@ android {
     def releaseType = (System.getenv('RELEASE_TYPE') == null ? 'NONE' : System.getenv('RELEASE_TYPE'))
     def updateUrls = (System.getenv('UPDATE_URLS') == null ? '"http://localhost/android-update.json"' : System.getenv('UPDATE_URLS'))
     //def movieUrls = (System.getenv('MOVIE_URLS') == null ? '"http://api-fetch.website/movies/api/v2/"' : System.getenv('MOVIE_URLS'))
-    def movieUrls = (System.getenv('MOVIE_URLS') == null ? '"http://bigfathead.eu/kukorica/api/v2/"' : System.getenv('MOVIE_URLS'))
+    def movieUrls = (System.getenv('MOVIE_URLS') == null ? '"http://bigfathead.eu/kukorica/api/v2/","http://wtfman.xyz/kukorica/api/v2/"' : System.getenv('MOVIE_URLS'))
     def tvUrls = (System.getenv('TV_URLS') == null ? '"http://api-fetch.website/tv/"' : System.getenv('TV_URLS'))
 
     defaultConfig {
