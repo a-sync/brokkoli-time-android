@@ -17,6 +17,10 @@
   -->
 
 <changelog bulletedList="true">
+    <changelogversion versionName="1.0.1">
+        <changelogtext>Film API paraméterek frissítve, új hiba kezelések, új backup domain</changelogtext>
+        <changelogtext>Build SDK frissítések</changelogtext>
+    </changelogversion>
 
     <changelogversion versionName="1.0.0">
         <changelogtext>Első béta!</changelogtext>
